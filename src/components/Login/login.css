@@ -1,0 +1,23 @@
+.loginForm{
+    max-width:35%;
+    height:400px;
+    margin: 5rem auto;
+    box-shadow: 10px 15px 15px -3px rgb(0 0 0 / 7%);
+    border-radius: 0.8rem;
+    background-color:white;
+    padding: 10px 14px;
+  }
+
+ .header{
+ color: seagreen;
+ }
+
+
+ .main{
+   overflow: hidden;
+   background-color:#bdb6b68e;
+   height:100vh;
+ 
+ }
+ 
+ 

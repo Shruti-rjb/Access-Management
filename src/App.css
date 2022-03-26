@@ -1,38 +1,156 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+  body {
+    overflow: hidden;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  
+  .topnav {
+    background-color: #ffff;
+    overflow: hidden;
   }
-  to {
-    transform: rotate(360deg);
+  .accordion-button {
+    background-color: #4f4f8a !important;
+    color: white !important;
   }
+  .accordion-body{
+    background-color: #4f4f8a !important;
+  }
+  .accordion-item:hover {
+    background-color: #4f4f8a !important;
+  }
+  .accordion:hover{ 
+    background-color: #4f4f8a !important;
+  }
+  
+  
+  .accordion-item {
+    border: none !important;
+  }
+  .content-page {
+    margin-left: 240px;
+    overflow: hidden;
+  }
+  .far.fa-user-circle {
+    font-size: 29px;
+    color: #726f6f;
+    padding-top: 10px;
+  }
+  .metismenu ul {
+    padding: 0;
+  }
+  
+  .input-10 {
+    width: 40px;
+    color: #4c4c96;
+    font-weight: 600;
+  }
+  
+  
+  
+  .topnav a {
+    float: left;
+    display: block;
+    color: #8d8b8b;
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 14px 16px;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .topnav a:hover {
+    color: black;
+    border-bottom: 3px solid red;
+  }
+  
+  .topnav .active {
+    color: black;
+    border-bottom: 3px solid red;
+  }
+  
+
+  
+  #navbar {
+    width: 16.6% !important;;
+    background-color: #21214e !important;
+    height: 80px;
+    border: none;
+  }
+  
+  .bg-blight {
+    color: #7f7fee;
+    font-weight: 600;
+  }
+  
+  .bg-bdark {
+    color: #4c4c96;
+    font-weight: 600;
+  }
+  
+  #navbar a {
+    color: white;
+  }
+  
+ 
+  
+  #navbar2 {
+    width: 80%;
+  }
+  
+  #navbar-items {
+    width: 25%;
+    height: 640px;
+    background-color: #4f4f8a;
+  }
+  
+  ul#navbar-items li {
+    color: white;
+    padding: 30px 25px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+  }
+ .accordion-body a {
+    color: white;
+    padding:  25px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  
+  #topnavbar {
+    width: 80%;
+  }
+  
+
+ 
+  .brand{
+    height:auto;
+    width: 90px;
+    
+   
+  }
+
+ .addbtn{
+  border: none;
+  outline: none;
+}
+
+
+.dashboard #navbar{
+  width: 25%!important;
+}
+
+.role  .dashboard #navbar{
+  width: 25%!important;
+}
+
+.button{
+cursor: pointer;
 }
