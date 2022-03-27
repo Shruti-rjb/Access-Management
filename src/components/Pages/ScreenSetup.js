@@ -83,6 +83,24 @@ const ScreenSetup = () => {
         
   }
 }
+
+
+
+const deleteData = async (id) => {
+  try {
+    const response = await axios({
+      method: "delete",
+      url: `https://ecom-react-task.herokuapp.com/screens/${id}`,
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Deleted successfully");
+  } catch (err) {}
+};
+
   return (
     <div className="role">
       <div className="container ">
@@ -205,6 +223,8 @@ const ScreenSetup = () => {
                           </Button>
                         </Modal.Footer>
                       </Modal>
+
+                      {/* {delete} */}
                       <RiDeleteBin5Line className="text-danger" onClick={handleShow2}/>
                       <Modal show={show2} onHide={handleClose2}>
           <Modal.Header closeButton>
@@ -214,7 +234,7 @@ const ScreenSetup = () => {
             <div><h5>Are you sure you want to delete this screen?</h5></div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="danger" onClick={handleClose2}>
+            <Button variant="danger" onClick={()=>{deleteData(ele.id)}}>
               Delete
             </Button>
             <Button variant="primary" onClick={handleClose2}>

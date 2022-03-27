@@ -45,6 +45,8 @@ const RoleSetting = () => {
   const token = JSON.parse(localStorage.getItem("token"));
 
 
+
+
   
 
   useEffect(() => {
@@ -72,14 +74,10 @@ const RoleSetting = () => {
             data: {
               name: values.name,
               description: values.description,
-             
-         
             }
-
-            
             })
 
-        console.log(response)
+  console.log(response)
        
   }catch (err) {
         
@@ -87,7 +85,20 @@ const RoleSetting = () => {
 }
 
   
+const deleteData = async (id) => {
+  try {
+    const response = await axios({
+      method: "delete",
+      url: `https://ecom-react-task.herokuapp.com/roles/${id}`,
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
+    console.log("Deleted successfully");
+  } catch (err) {}
+};
 
   return (
     <div className="role">
@@ -225,7 +236,7 @@ const RoleSetting = () => {
             <div><h5>Are you sure you want to delete this role?</h5></div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="danger" onClick={handleClose2}>
+            <Button variant="danger" onClick={()=>{deleteData(ele.id)}}>
               Delete
             </Button>
             <Button variant="primary" onClick={handleClose2}>

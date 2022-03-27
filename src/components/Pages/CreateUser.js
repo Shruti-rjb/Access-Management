@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios, { Axios } from "axios";
 import { BsPlusLg } from "react-icons/bs";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -22,8 +22,9 @@ const validationSchema = Yup.object({
 
 const CreateUser = () => {
 
- 
+  
 
+  // const [editData, setEditData] = useState(null);
 
   const [show, setShow] = useState(false);
 
@@ -75,7 +76,6 @@ const CreateUser = () => {
               
             }
 
-            
             })
 
         console.log(response)
@@ -84,6 +84,66 @@ const CreateUser = () => {
         
   }
 }
+
+
+
+const deleteData = async (id) => {
+  try {
+    const response = await axios({
+      method: "delete",
+      url: `https://ecom-react-task.herokuapp.com/user/${id}`,
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Deleted successfully");
+  } catch (err) {}
+};
+
+
+
+// const { values} = useFormik({
+//   enableReinitialize: true,
+//   initialValues: values,
+ 
+//   onSubmit: (_, { resetForm }) => {
+//     handleFormSubmit(resetForm);
+//   },
+// });
+
+
+
+
+
+
+// const handleFormSubmit = async (resetForm) => {
+
+//   let response;
+//   if (editData) {
+//     response = await axios.put(
+//       `https://ecom-react-task.herokuapp.com/user/${editData?._id}`,values
+//     );
+//   } else {
+//    response = await axios.post(
+//       " https://ecom-react-task.herokuapp.com/user",
+//       values
+//     );
+//   }
+
+//   if (response?.data?._id) {
+    
+
+   
+//     setEditData(null);
+//   } else {
+//     console.log("Something went wrong");
+//   }
+
+//   console.log(response);
+// };
+
 
   return (
     <div className="role">
@@ -195,6 +255,7 @@ const CreateUser = () => {
                                 id="name"
                                 aria-describedby="emailHelp"
                                 placeholder="Enter Name"
+                                // value={values.name}
                               />
                             </div>
 
@@ -204,6 +265,7 @@ const CreateUser = () => {
                                 type="email"
                                 className="form-control mt-2"
                                 id="email"
+                                // value={values.email}
                                 aria-describedby="emailHelp"
                                 placeholder="Enter Email"
                               />
@@ -232,7 +294,7 @@ const CreateUser = () => {
             <div><h5>Are you sure you want to delete this user?</h5></div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="danger" onClick={handleClose2}>
+            <Button variant="danger" onClick={() => deleteData(ele.id)}>
               Delete
             </Button>
             <Button variant="primary" onClick={handleClose2}>
