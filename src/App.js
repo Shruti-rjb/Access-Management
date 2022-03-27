@@ -3,7 +3,6 @@ import "./App.css";
 import {Login} from "./components/Login/Login";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { Route, Routes, Navigate } from "react-router-dom";
-
 import Dashboard from './components/Dashboard';
 import ScreenSetup from './components/Pages/ScreenSetup';
 import RoleSetting from './components/Pages/RoleSetting';
@@ -17,13 +16,13 @@ function App() {
 
 
   return <div className="App">
-
-        {/* <Routes>
+{/* 
+        <Routes>
           <Route path='/'  element={<Login/>} />
           <Route path='/dashboard'  element={<Dashboard/>} >
           <Route path='user'  element={<CreateUser/>}/>
           <Route path='role'  element={<RoleSetting/>}/>
-            <Route path='screen'  element={<ScreenSetup/>}/>
+          <Route path='screen'  element={<ScreenSetup/>}/>
            
            
           </Route>
@@ -46,7 +45,6 @@ function App() {
 
         {user && (
           <Route path="dashboard" element={<Dashboard name={name} />}>
-           
             <Route path="user" element={<CreateUser />} />
             <Route path="role" element={<RoleSetting />} />
             <Route path="screen" element={<ScreenSetup />} />
@@ -57,9 +55,7 @@ function App() {
           element={<Navigate to = {user ? "dashboard" : "/"} replace />}
         />
       </Routes>
-     
-   
-   
+ 
     
   </div>;
 }

@@ -27,7 +27,7 @@ export const Login = ({ authenticate, name, setName }) => {
               method: "post",
               data: values,
             });
-            console.log(response,"response")
+           // console.log(response,"response")
             localStorage.setItem(
               "token",
               JSON.stringify(response.data.data.token)

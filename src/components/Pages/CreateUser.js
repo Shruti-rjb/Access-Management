@@ -5,8 +5,26 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { AiOutlineEdit } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import { Form, Field, Formik, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+
+const initialValues = {
+  name: "",
+  email: "",
+  password: ""
+};
+const validationSchema = Yup.object({
+  name: Yup.string().required("This is required field"),
+  email: Yup.string().email('Not a Valid Mail').required("This is required"),
+  password: Yup.string().min(6).max(12).required('Required')
+});
 
 const CreateUser = () => {
+
+ 
+
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -34,12 +52,44 @@ const CreateUser = () => {
         return res.data.data;
       });
   }, []);
-  console.log(data, "todo");
+  //console.log(data, "dataa");
+
+
+  const onSubmit = async(values,onSubmitProps) => {
+    onSubmitProps.setSubmitting(false);
+    onSubmitProps.resetForm();
+    //console.log(values)
+    
+    try {
+        const response = await axios({
+            method : 'post',
+            url: 'https://ecom-react-task.herokuapp.com/user',
+            headers: {
+              "content-type":"application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            data: {
+              name: values.name,
+              email: values.email,
+              password:values.password
+              
+            }
+
+            
+            })
+
+        console.log(response)
+       
+  }catch (err) {
+        
+  }
+}
+
   return (
     <div className="role">
       <div className="container ">
         <div className="row">
-        <h4 className="ms-4">CreateUser</h4>
+        <h4 className="ms-4">Create User</h4>
         <div className="d-flex justify-content-end">
         <button
           type="button"
@@ -53,40 +103,58 @@ const CreateUser = () => {
           <Modal.Header closeButton>
             <Modal.Title>Add User</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <form>
-              <div class="form-group">
-                <label htmlFor="name">Username</label>
-                <input
-                  type="text"
-                  className="form-control mt-2"
-                  id="name"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter Name"
-                />
-              </div>
 
-              <div class="form-group mt-4">
-                <label htmlFor="description">Email</label>
-                <input
-                  type="email"
-                  className="form-control mt-2"
-                  id="email"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter Email"
-                />
-              </div>
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={handleClose}>
-              Add
-            </Button>
-            <Button variant="danger" onClick={handleClose}>
-              Cancel
-            </Button>
-          </Modal.Footer>
+          <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+              >
+                <Modal.Body>
+                  <Form>
+                    <div className="row">
+                      <div className="col-6">
+                        <label for="name">Name</label>
+                        <span>
+                          <Field type="text" id="name" name="name" />
+                        </span>
+                      </div>
+                      {/* <ErrorMessage name="name" component={TextError} /> */}
+                      <div className="col-6">
+                        <label for="email">Email</label>
+                        <span>
+                          <Field
+                            type="text"
+                            id="email"
+                            name="email"
+                          />
+                        </span>
+                      </div>
+                      <div className="col-6">
+                        <label for="password">Password</label>
+                        <span>
+                          <Field
+                            type="password"
+                            id="password"
+                            name="password"
+                          />
+                        </span>
+                      </div>
+                    </div>
+                    {/* <ErrorMessage name="password" component={TextError} /> */}
+
+                    <Modal.Footer>
+                      <Button type="submit" variant="primary" onClick={handleClose}>
+                        Add User
+                      </Button>
+                      <Button variant="danger" onClick={handleClose}>
+                        Cancel
+                      </Button>
+                    </Modal.Footer>
+                  </Form>
+                </Modal.Body>
+              </Formik>
         </Modal>
+
       </div>
       <div className="wrapper">
         <div className="m-5">
@@ -103,7 +171,7 @@ const CreateUser = () => {
             <tbody>
               {data.map((ele, index) => {
                 return (
-                  <tr>
+                  <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{ele.id}</td>
                     <td>{ele.email}</td>

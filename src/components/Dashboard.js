@@ -16,7 +16,8 @@ const Dashboard = () => {
           <a className="text-decoration-none fs14 ps-3" htmlFor="#">
             <img src={brand} className="brand img-fluid" />
           </a>
-          
+         
+
         
         </div>
 
@@ -53,10 +54,11 @@ const Dashboard = () => {
         
 
         <Outlet />
-       
-        <div className='fs-3 ms-4 float-end'>
+        {/* <div className='fs-3 ms-4 float-end'>
           <button onClick={()=>{navigate("/")}}><CgLogOff /></button>
-        </div>
+        </div> */}
+       
+        
       </div>
    
     </div>
