@@ -7,21 +7,24 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Form, Field, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import EditScreen from "./EditScreen";
 
 const initialValues = {
   name: "",
   description: "",
- 
 };
 const validationSchema = Yup.object({
   name: Yup.string().required("This is required field"),
- description: Yup.string().required("This is required field"),
- 
+  description: Yup.string().required("This is required field"),
 });
 
 const ScreenSetup = () => {
+  const [id, setId] = useState(null);
+  const [name, setName] = useState(null);
+  const [description, setDescription] = useState(null);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -29,17 +32,16 @@ const ScreenSetup = () => {
   const [show1, setShow1] = useState(false);
 
   const handleClose1 = () => setShow1(false);
-  const handleShow1 = () => setShow1(true);
-
-  const [show2, setShow2] = useState(false);
-
-  const handleClose2 = () => setShow2(false);
-  const handleShow2 = () => setShow2(true);
+  const handleShow1 = (id,name,description) => {
+    setShow1(true);
+    setId(id);
+    setDescription(description);
+    setName(name);
+  };
 
   const [data, setData] = useState([]);
   const api = " https://ecom-react-task.herokuapp.com/screens";
   const token = JSON.parse(localStorage.getItem("token"));
-  
 
   useEffect(() => {
     axios
@@ -49,77 +51,61 @@ const ScreenSetup = () => {
         return res.data.data;
       });
   }, [data]);
-  console.log(data, "screen");
+  //console.log(data, "screen");
 
-
-
-
-  const onSubmit = async(values) => {
-    // onSubmitProps.setSubmitting(false);
-    // onSubmitProps.resetForm();
-    //console.log(values)
-
+  const onSubmit = async (values) => {
     try {
-        const response = await axios({
-            method : 'post',
-            url: 'https://ecom-react-task.herokuapp.com/screens',
-            headers: {
-              "content-type":"application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            data: {
-              name: values.name,
-              description: values.description,
-             
-         
-            }
+      const response = await axios({
+        method: "post",
+        url: "https://ecom-react-task.herokuapp.com/screens",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          name: values.name,
+          description: values.description,
+        },
+      });
 
-            
-            })
+      console.log(response);
+    } catch (err) {}
+  };
 
-        console.log(response)
-       
-  }catch (err) {
-        
-  }
-}
+  const deleteData = async (id) => {
+    try {
+      const response = await axios({
+        method: "delete",
+        url: `https://ecom-react-task.herokuapp.com/screens/${id}`,
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-
-
-const deleteData = async (id) => {
-  try {
-    const response = await axios({
-      method: "delete",
-      url: `https://ecom-react-task.herokuapp.com/screens/${id}`,
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    console.log("Deleted successfully");
-  } catch (err) {}
-};
+      console.log("Deleted successfully");
+    } catch (err) {}
+  };
 
   return (
     <div className="role">
       <div className="container ">
         <div className="row">
-        <h4 className="ms-4">Screen Setup</h4>
-        <div className="d-flex justify-content-end">
-        <button
-          type="button"
-          className="btn btn-primary addbtn me-5"
-          onClick={handleShow}
-        >
-          <BsPlusLg className="me-2" onClick={handleShow} />
-          Add Screen
-        </button>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add Screen</Modal.Title>
-          </Modal.Header>
-          <Formik
+          <h4 className="ms-4">Screen Setup</h4>
+          <div className="d-flex justify-content-end">
+            <button
+              type="button"
+              className="btn btn-primary addbtn me-5"
+              onClick={handleShow}
+            >
+              <BsPlusLg className="me-2" onClick={handleShow} />
+              Add Screen
+            </button>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Add Screen</Modal.Title>
+              </Modal.Header>
+              <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={onSubmit}
@@ -144,12 +130,15 @@ const deleteData = async (id) => {
                           />
                         </span>
                       </div>
-                      
                     </div>
                     {/* <ErrorMessage name="description" component={TextError} /> */}
 
                     <Modal.Footer>
-                      <Button type="submit" variant="primary" onClick={handleClose}>
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        onClick={handleClose}
+                      >
                         Add User
                       </Button>
                       <Button variant="danger" onClick={handleClose}>
@@ -159,103 +148,70 @@ const deleteData = async (id) => {
                   </Form>
                 </Modal.Body>
               </Formik>
-        </Modal>
-      </div>
-      <div className="wrapper">
-        <div className="m-5">
-          <table className="table table-striped ">
-            <thead>
-              <tr>
-                <th scope="col">S.N</th>
-                <th scope="col">Screen Name</th>
-                <th scope="col">Description</th>
+            </Modal>
+          </div>
+          <div className="wrapper">
+            <div className="m-5">
+              <table className="table table-striped ">
+                <thead>
+                  <tr>
+                    <th scope="col">S.N</th>
+                    <th scope="col">Screen Name</th>
+                    <th scope="col">Description</th>
 
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((ele, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{ele.name}</td>
-                    <td>{ele.description}</td>
-                    <td>
-                      <AiOutlineEdit
-                        className="text-primary me-3"
-                        onClick={handleShow1}
-                      />
-                      <Modal show={show1} onHide={handleClose1}>
-                        <Modal.Header closeButton>
-                          <Modal.Title>Add Screen</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                          <form>
-                            <div class="form-group">
-                              <label htmlFor="name">Name</label>
-                              <input
-                                type="text"
-                                className="form-control mt-2"
-                                id="name"
-                                aria-describedby="emailHelp"
-                                placeholder="Enter Name"
-                              />
-                            </div>
-
-                            <div class="form-group mt-4">
-                              <label htmlFor="description">Description</label>
-                              <input
-                                type="text"
-                                className="form-control mt-2"
-                                id="description"
-                                aria-describedby="emailHelp"
-                                placeholder="Enter Description"
-                              />
-                            </div>
-                          </form>
-                        </Modal.Body>
-                        <Modal.Footer>
-                          <Button variant="primary" onClick={handleClose1}>
-                            Edit
-                          </Button>
-                          <Button variant="danger" onClick={handleClose1}>
-                            Cancel
-                          </Button>
-                        </Modal.Footer>
-                      </Modal>
-
-                      {/* {delete} */}
-                      <RiDeleteBin5Line className="text-danger" onClick={handleShow2}/>
-                      <Modal show={show2} onHide={handleClose2}>
-          <Modal.Header closeButton>
-            <Modal.Title>Delete</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div><h5>Are you sure you want to delete this screen?</h5></div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="danger" onClick={()=>{deleteData(ele.id)}}>
-              Delete
-            </Button>
-            <Button variant="primary" onClick={handleClose2}>
-              Cancel
-            </Button>
-          </Modal.Footer>
-        </Modal>
-                    </td>
+                    <th scope="col">Action</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {data.map((ele, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{ele.name}</td>
+                        <td>{ele.description}</td>
+                        <td>
+
+
+                          {/* {----edit----} */}
+                          <AiOutlineEdit
+                            className="text-primary me-3"
+                            onClick={()=>{
+                              handleShow1(ele.id,ele.name,ele.description)
+                            }}
+                          />
+                          <EditScreen handleClose1={handleClose1 } show1={show1} name= {name} description={description} id={id}/>
+                          
+
+                          {/* {delete} */}
+                          <RiDeleteBin5Line
+                            className="text-danger"
+                            onClick={() => {
+                              deleteData(ele.id);
+                              toast.error("Screen has been deleted");
+                            }}
+                          />
+                          <ToastContainer
+                            position="top-right"
+                            autoClose={2000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
-        </div>
-      
-     
     </div>
-    </div>
-    
   );
 };
 

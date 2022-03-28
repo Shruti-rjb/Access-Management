@@ -16,18 +16,7 @@ function App() {
 
 
   return <div className="App">
-{/* 
-        <Routes>
-          <Route path='/'  element={<Login/>} />
-          <Route path='/dashboard'  element={<Dashboard/>} >
-          <Route path='user'  element={<CreateUser/>}/>
-          <Route path='role'  element={<RoleSetting/>}/>
-          <Route path='screen'  element={<ScreenSetup/>}/>
-           
-           
-          </Route>
 
-        </Routes> */}
 
 <Routes>
         {!user && (
@@ -55,6 +44,22 @@ function App() {
           element={<Navigate to = {user ? "dashboard" : "/"} replace />}
         />
       </Routes>
+
+      
+{/* 
+        <Routes>
+          <Route path='/'  element={<Login/>} />
+          <Route path='/dashboard'  element={<Dashboard/>} >
+          <Route path='user'  element={<CreateUser/>}/>
+          <Route path='role'  element={<RoleSetting/>}/>
+          <Route path='screen'  element={<ScreenSetup/>}/>
+           
+           
+          </Route>
+
+        </Routes> */}
+
+
  
     
   </div>;

@@ -7,7 +7,10 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Form, Field, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import EditRoles from "./EditRoles";
+import {FiSettings} from "react-icons/fi";
 
 const initialValues = {
   name: "",
@@ -23,22 +26,27 @@ const validationSchema = Yup.object({
 
 const RoleSetting = () => {
 
-  // const inputName =useRef();
-  // const inputDescription =useRef();
+  const [name,setName] = useState(null)
+  const [description, setDescription] = useState(null)
+  const [id,setId] =useState(null)
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
   const [show1, setShow1] = useState(false);
 
   const handleClose1 = () => setShow1(false);
-  const handleShow1 = () => setShow1(true);
+  
+  const handleShow1 = (name,description,id) => {
+    setShow1(true);
+    setName(name);
+    setId(id);
+    setDescription(description);
+    
+  };
 
-  const [show2, setShow2] = useState(false);
-
-  const handleClose2 = () => setShow2(false);
-  const handleShow2 = () => setShow2(true);
 
   const [data, setData] = useState([]);
   const api = " https://ecom-react-task.herokuapp.com/roles";
@@ -59,10 +67,7 @@ const RoleSetting = () => {
   }, [data]);
 
   const onSubmit = async(values) => {
-    // onSubmitProps.setSubmitting(false);
-    // onSubmitProps.resetForm();
-    //console.log(values)
-
+   
     try {
         const response = await axios({
             method : 'post',
@@ -97,7 +102,9 @@ const deleteData = async (id) => {
     });
 
     console.log("Deleted successfully");
-  } catch (err) {}
+  } catch (err) {
+    console.log("Error")
+  }
 };
 
   return (
@@ -133,7 +140,7 @@ const deleteData = async (id) => {
                           <Field type="text" id="name" name="name" />
                         </span>
                       </div>
-                      {/* <ErrorMessage name="name" component={TextError} /> */}
+                      <ErrorMessage name="name"  />
                       <div className="col-6">
                         <label for="description">Description</label>
                         <span>
@@ -146,7 +153,7 @@ const deleteData = async (id) => {
                       </div>
                       
                     </div>
-                    {/* <ErrorMessage name="description" component={TextError} /> */}
+                    <ErrorMessage name="description"  />
 
                     <Modal.Footer>
                       <Button type="submit" variant="primary" onClick={handleClose}>
@@ -167,7 +174,7 @@ const deleteData = async (id) => {
             <thead>
               <tr>
                 <th scope="col">S.N</th>
-                <th scope="col">Screen Name</th>
+                <th scope="col">Role Name</th>
                 <th scope="col">Description</th>
 
                 <th scope="col">Action</th>
@@ -177,74 +184,42 @@ const deleteData = async (id) => {
               {data.map((ele, index) => {
                 return (
                   <tr key={index}>
-                    <td>{index + 1}</td>
+                    <td>{ele.id}</td>
                     <td>{ele.name}</td>
                     <td>{ele.description}</td>
                     <td>
 
-                      {/* {edit} */}
+                      {/* {-------edit-----} */}
                       <AiOutlineEdit
                         className="text-primary me-3"
-                        onClick={handleShow1}
+                        onClick={()=>{handleShow1(ele.name,ele.description,ele.id)}}
                       />
-                      <Modal show={show1} onHide={handleClose1}>
-                        <Modal.Header closeButton>
-                          <Modal.Title>Add Screen</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                          <form>
-                            <div class="form-group">
-                              <label htmlFor="name">Name</label>
-                              <input
-                                type="text"
-                                className="form-control mt-2"
-                                id="name"
-                                aria-describedby="emailHelp"
-                                placeholder="Enter Name"
-                              />
-                            </div>
+                      <EditRoles handleClose1={handleClose1} show1={show1} name={name} id={id} description={description}/>
+                     
 
-                            <div class="form-group mt-4">
-                              <label htmlFor="description">Description</label>
-                              <input
-                                type="text"
-                                className="form-control mt-2"
-                                id="description"
-                                aria-describedby="emailHelp"
-                                placeholder="Enter Description"
-                              />
-                            </div>
-                          </form>
-                        </Modal.Body>
-                        <Modal.Footer>
-                          <Button variant="primary" onClick={handleClose1}>
-                            Edit
-                          </Button>
-                          <Button variant="danger" onClick={handleClose1}>
-                            Cancel
-                          </Button>
-                        </Modal.Footer>
-                      </Modal>
-
-                      {/* {delete} */}
-                      <RiDeleteBin5Line className="text-danger" onClick={handleShow2}/>
-                      <Modal show={show2} onHide={handleClose2}>
-          <Modal.Header closeButton>
-            <Modal.Title>Delete</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div><h5>Are you sure you want to delete this role?</h5></div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="danger" onClick={()=>{deleteData(ele.id)}}>
-              Delete
-            </Button>
-            <Button variant="primary" onClick={handleClose2}>
-              Cancel
-            </Button>
-          </Modal.Footer>
-        </Modal>
+                      {/* {-----delete----} */}
+                     
+                      <RiDeleteBin5Line className="text-danger me-3"  onClick={() => {
+                              deleteData(ele.id);
+                              toast.error("Role has been deleted");
+                            }}/>
+                             <FiSettings className="me-3"/>
+                            
+                              <ToastContainer
+                            position="top-right"
+                            autoClose={2000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                          />
+                         
+       
                     </td>
+                  
                   </tr>
                 );
               })}
