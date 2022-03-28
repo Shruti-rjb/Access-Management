@@ -52,7 +52,7 @@ const CreateUser = () => {
         setData(res.data.data);
         return res.data.data;
       });
-  }, []);
+  }, [data]);
   //console.log(data, "dataa");
 
 

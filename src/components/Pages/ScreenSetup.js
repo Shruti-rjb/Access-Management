@@ -48,7 +48,7 @@ const ScreenSetup = () => {
         setData(res.data.data);
         return res.data.data;
       });
-  }, []);
+  }, [data]);
   console.log(data, "screen");
 
 

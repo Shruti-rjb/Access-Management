@@ -56,7 +56,7 @@ const RoleSetting = () => {
         setData(res.data.data);
         return res.data.data;
       });
-  }, []);
+  }, [data]);
 
   const onSubmit = async(values) => {
     // onSubmitProps.setSubmitting(false);
